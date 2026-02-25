@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Nanum Gothic', sans-serif;
+  user-select: none;
+}
+
+#gameWrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+#bgCanvas  { z-index: 0; }
+#gameCanvas {
+  z-index: 1;
+  cursor: crosshair;
+}
+
+/* ── UI ── */
+#ui {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+#zoneLabel {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 22px;
+  color: #cc88ff;
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px currentColor, 0 2px 8px rgba(0,0,0,0.9);
+  transition: color 1s ease, text-shadow 1s ease;
+}
+
+#progressRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#progressPct {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1px;
+  min-width: 30px;
+  text-align: right;
+}
+
+#progressBar {
+  width: 160px;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+#progressFill {
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #7b2ff7, #00d4ff);
+  transition: width 0.4s ease, background 1s ease;
+}
+
+#hint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+}
+
+/* ── OVERLAYS ── */
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.87);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 36px 48px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
+.overlay.show {
+  display: flex;
+}
+
+.titleText {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 30px;
+  letter-spacing: 5px;
+  background: linear-gradient(135deg, #aa55ff, #00d4ff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.deathTitle {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 28px;
+  color: #ff4444;
+  letter-spacing: 4px;
+}
+
+.winTitle {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 28px;
+  color: #00d4ff;
+  letter-spacing: 4px;
+  text-shadow: 0 0 24px #00d4ff;
+}
+
+.desc {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.em {
+  color: rgba(255,255,255,0.9);
+  font-weight: 800;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 36px;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 17px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:hover {
+  transform: scale(1.07);
+}
+
+.btnStart {
+  background: linear-gradient(135deg, #7b2ff7, #4400bb);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(123, 47, 247, 0.55);
+}
+
+.btnDeath {
+  background: linear-gradient(135deg, #ff4444, #990000);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(255, 50, 50, 0.4);
+}
+
+.btnWin {
+  background: linear-gradient(135deg, #00d4ff, #0066bb);
+  color: #fff;
+  box-shadow: 0 0 22px rgba(0, 200, 255, 0.5);
+}
+
+.btnPractice {
+  background: linear-gradient(135deg, #00aa00, #006600);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(0, 170, 0, 0.4);
+}
+
+.btnZone {
+  background: linear-gradient(135deg, #4466aa, #0033aa);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(68, 102, 170, 0.4);
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.btnZone:hover {
+  transform: scale(1.05);
+}
+
+.practiceTitle {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 28px;
+  color: #00aa00;
+  letter-spacing: 4px;
+}
+
+.btnBack {
+  background: linear-gradient(135deg, #aa6600, #663300);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(170, 102, 0, 0.4);
+}
+
+.btnSmall {
+  padding: 8px 24px;
+  font-size: 13px;
+  background: linear-gradient(135deg, #666666, #333333);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(100, 100, 100, 0.3);
+  pointer-events: auto;
+}
+
+/* ── TIMER ── */
+#timer {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 28px;
+  color: #00d4ff;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px currentColor, 0 2px 8px rgba(0,0,0,0.9);
+  pointer-events: none;
+}
