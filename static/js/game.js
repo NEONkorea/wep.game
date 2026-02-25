@@ -322,9 +322,10 @@ function updateOrb(){
   // 하늘 지역(ZONE 3)에서 바람 효과 적용
   const orbZone = Math.floor(orb.wy / ZONE_H);
   if(orbZone === 3){
-    // 바람에 의해 구슬이 옆으로 밀려남 (더 강한 효과)
-    orb.x += windStrength * 2;  // 기본 바람 * 2
-    orb.vx += windStrength * 0.05;  // 구슬의 속도도 바람에 영향
+    // 바람에 의해 구슬이 옆으로 밀려남 (훨씬 강한 효과)
+    // windStrength는 음수값 (왼쪽 방향)
+    orb.x += windStrength * 3;  // 기본 바람 * 3 (강한 이동)
+    orb.vx += windStrength * 0.15;  // 구슬의 속도도 바람에 영향 (강함)
   }
 
   // 벽 충돌 처리 (순간이동)
@@ -734,18 +735,21 @@ function updateWindParticles(){
   const playerInSky = player.wy >= skyBot && player.wy < skyTop;
   const orbInSky = orb && orb.wy >= skyBot && orb.wy < skyTop;
   
-  // 하늘 지역에 있으면 계속 바람 파티클 생성
+  // 하늘 지역에 있으면 계속 바람 파티클 생성 (더 빈번하게)
   if(playerInSky || orbInSky || (camY >= skyBot - CH/2 && camY < skyTop)){
-    if(Math.random() < 0.6){
-      const wx = Math.random() * (CW + 100) - 50;
+    // 높은 확률로 파티클 생성
+    const particleChance = orbInSky ? 0.85 : 0.7;
+    if(Math.random() < particleChance){
+      const wx = CW + 20 + Math.random() * 40;  // 오른쪽에서 시작
       const wy = camY + Math.random() * CH;
       windParticles.push({
         x: wx,
         wy: wy,
-        vx: -rng(1.5, 3),  // 오른쪽에서 왼쪽으로
-        vy: rng(-0.5, 0.5),
-        alpha: rng(0.1, 0.3),
-        length: rng(8, 16)
+        vx: -rng(2.5, 4.5),  // 더 빠른 속도로 왼쪽으로 이동
+        vy: rng(-0.8, 0.8),
+        alpha: rng(0.25, 0.55),  // 더 밝음
+        length: rng(16, 32),  // 더 길게
+        thickness: rng(2, 4)
       });
     }
   }
@@ -754,8 +758,8 @@ function updateWindParticles(){
   windParticles = windParticles.filter(wp => {
     wp.x += wp.vx;
     wp.wy += wp.vy;
-    wp.alpha *= 0.98;
-    return wp.alpha > 0.02 && wp.x > -100 && wp.x < CW + 100;
+    wp.alpha *= 0.96;  // 더 천천히 사라짐
+    return wp.alpha > 0.01 && wp.x > -150 && wp.x < CW + 50;
   });
 }
 
@@ -765,14 +769,24 @@ function drawWindParticles(){
   
   windParticles.forEach(wp=>{
     // 카메라 범위 내에만 그리기
-    if(wp.wy >= camY - 100 && wp.wy <= camY + CH + 100){
+    if(wp.wy >= camY - 150 && wp.wy <= camY + CH + 150){
       const sy = toSY(wp.wy);
-      ctx.strokeStyle = `rgba(150,200,255,${wp.alpha})`;
-      ctx.lineWidth = 1.5;
+      
+      // 바람 선 그리기 (더 선명하게)
+      ctx.strokeStyle = `rgba(100,180,255,${wp.alpha * 0.8})`;
+      ctx.lineWidth = wp.thickness;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
       ctx.beginPath();
       ctx.moveTo(wp.x, sy);
-      ctx.lineTo(wp.x + wp.length * 0.7, sy - wp.length * 0.3);
+      ctx.lineTo(wp.x + wp.length * 0.6, sy - wp.length * 0.4);
       ctx.stroke();
+      
+      // 바람 입자의 끝에 점 추가 (더 선명한 효과)
+      ctx.fillStyle = `rgba(150,200,255,${wp.alpha})`;
+      ctx.beginPath();
+      ctx.arc(wp.x + wp.length * 0.6, sy - wp.length * 0.4, wp.thickness * 1.5, 0, Math.PI * 2);
+      ctx.fill();
     }
   });
 }
@@ -799,6 +813,19 @@ function updateUI(){
               'linear-gradient(90deg,#228B22,#88ee44)','linear-gradient(90deg,#1E90FF,#88ddff)',
               'linear-gradient(90deg,#4466aa,#00d4ff)'];
   document.getElementById('progressFill').style.background=bars[zone];
+  
+  // 동적 hint 텍스트
+  const hintEl = document.getElementById('hint');
+  if(player.falling){
+    hintEl.textContent = '⚠️ 추락 중... 다음 발판을 노려라!';
+    hintEl.style.color = 'rgba(255,150,150,0.5)';
+  } else if(zone === 3){
+    hintEl.textContent = '💨 바람에 주의하세요! (오른쪽←왼쪽)';
+    hintEl.style.color = 'rgba(100,180,255,0.6)';
+  } else {
+    hintEl.textContent = '좌클릭으로 구슬을 던지세요';
+    hintEl.style.color = 'rgba(255,255,255,0.35)';
+  }
 }
 
 // ════════════════════════════════════════════════
@@ -813,6 +840,7 @@ function gameLoop(ts){
     updateSnowflakes();
     updateWindParticles();
     updateCamera();
+    updateUI();  // 매 프레임마다 UI 업데이트
   }
   drawBackground();
   ctx.clearRect(0,0,CW,CH);
