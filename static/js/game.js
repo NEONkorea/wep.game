@@ -6,10 +6,62 @@ const bgCtx      = bgCanvas.getContext('2d');
 const gameCanvas = document.getElementById('gameCanvas');
 const ctx        = gameCanvas.getContext('2d');
 
-const CW = 480;
-const CH = 700;
-bgCanvas.width   = CW;  bgCanvas.height  = CH;
-gameCanvas.width = CW;  gameCanvas.height = CH;
+// 게임 내부 해상도 (게임 로직용)
+let CW = 480;
+let CH = 700;
+
+// 캔버스 크기를 뷰포트에 맞게 설정
+function resizeCanvas() {
+  const wrapper = document.getElementById('gameWrapper');
+  const width = wrapper.clientWidth;
+  const height = wrapper.clientHeight;
+  
+  // 종횡비 유지 (480:700 = 0.686)
+  const gameAspectRatio = 480 / 700;
+  const viewportAspectRatio = width / height;
+  
+  let canvasWidth, canvasHeight;
+  
+  if (viewportAspectRatio > gameAspectRatio) {
+    // 뷰포트가 더 넓음 -> 높이 기준
+    canvasHeight = height;
+    canvasWidth = height * gameAspectRatio;
+  } else {
+    // 뷰포트가 더 좁음 -> 너비 기준
+    canvasWidth = width;
+    canvasHeight = width / gameAspectRatio;
+  }
+  
+  bgCanvas.width = CW;
+  bgCanvas.height = CH;
+  gameCanvas.width = CW;
+  gameCanvas.height = CH;
+  
+  bgCanvas.style.width = canvasWidth + 'px';
+  bgCanvas.style.height = canvasHeight + 'px';
+  gameCanvas.style.width = canvasWidth + 'px';
+  gameCanvas.style.height = canvasHeight + 'px';
+  
+  // DPI 스케일링 처리
+  const dpr = window.devicePixelRatio || 1;
+  if (dpr > 1) {
+    bgCanvas.width *= dpr;
+    bgCanvas.height *= dpr;
+    gameCanvas.width *= dpr;
+    gameCanvas.height *= dpr;
+    bgCtx.scale(dpr, dpr);
+    ctx.scale(dpr, dpr);
+  }
+}
+
+// 초기 캔버스 크기 설정
+resizeCanvas();
+
+// 윈도우 크기 변경 시 캔버스 크기 조정
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+  setTimeout(resizeCanvas, 100);
+});
 
 // ════════════════════════════════════════════════
 //  CONSTANTS
