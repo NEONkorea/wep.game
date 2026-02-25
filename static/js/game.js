@@ -291,6 +291,8 @@ function updatePlayer(){
 // ════════════════════════════════════════════════
 function throwOrb(mouseX,mouseY){
   if(gameState!=='playing'||orb) return;
+  // 플레이어가 떨어지는 중이면 구슬을 던질 수 없음
+  if(player.falling) return;
   const pSY=toSY(player.wy)-player.h/2;
   const dx=mouseX-player.x, dy=mouseY-pSY;
   const dist=Math.hypot(dx,dy);
