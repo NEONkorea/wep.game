@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>PIXEL BLINK</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="corner-deco tl"></div>
+<div class="corner-deco tr"></div>
+<div class="corner-deco bl"></div>
+<div class="corner-deco br"></div>
+
+<!-- MAIN SCREEN -->
+<div class="screen active" id="main-screen">
+  <div class="main-top">
+    <div class="title">PIXEL<br>BLINK</div>
+    <div class="subtitle">&#9658; TAP THE YELLOW BLOCK &#9668;</div>
+  </div>
+
+  <div class="main-legend-wrap">
+    <div class="legend-card">
+      <div class="legend-dot-big yellow-block"></div>
+      <div class="legend-text-wrap">
+        <span class="legend-title-text">&#53364;&#47533; &#45824;&#49345;</span>
+        <span class="legend-desc">&#44552; &#48660;&#47084;&#51012; &#48736;&#47476;&#44172; &#53468;!</span>
+      </div>
+    </div>
+    <div class="legend-card">
+      <div class="legend-dot-big red-block"></div>
+      <div class="legend-text-wrap">
+        <span class="legend-title-text">&#45796;&#51020; &#50948;&#52824;</span>
+        <span class="legend-desc">&#47808;&#46300;&#49828;&#53860; = &#45796;&#51020;&#50640; &#50620; &#48660;&#47084;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 랭킹 -->
+  <div class="main-ranking-panel">
+    <div class="main-ranking-header">TOP 10 RANKING</div>
+    <div class="ranking-list" id="main-ranking-list">
+      <div class="rank-loading">&#48520;&#47084;&#50724;&#45716; &#51473;...</div>
+    </div>
+  </div>
+
+  <div class="main-bottom">
+    <button class="px-btn" onclick="startCountdown()">&#44172;&#51076; &#49884;&#51089;</button>
+    <button class="px-btn secondary" onclick="showRankingScreen()">&#127942; &#47581;&#53373; &#48372;&#44592;</button>
+    <div class="hint-text">15&#52488; &#50504;&#50640; &#52572;&#45824;&#54620; &#47588;&#51060; &#53364;&#47533;!</div>
+  </div>
+</div>
+
+<!-- COUNTDOWN SCREEN -->
+<div class="screen" id="countdown-screen">
+  <div class="ready-text">READY...</div>
+  <div class="countdown-num" id="countdown-num">3</div>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="screen" id="game-screen">
+  <div class="hud">
+    <div class="hud-box">
+      <div class="hud-label">SCORE</div>
+      <div class="hud-value" id="score-value">0</div>
+    </div>
+    <div class="hud-box">
+      <div class="hud-label">TIME</div>
+      <div class="hud-value" id="timer-value">15</div>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="game-legend">
+    <div class="legend-item">
+      <div class="legend-dot yellow-block"></div>
+      <span>&#51648;&#44552; &#53364;&#47533;!</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot red-block"></div>
+      <span>&#45796;&#51020; &#50948;&#52824;</span>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="screen" id="result-screen">
+  <div class="result-header">GAME OVER</div>
+  <div class="result-card">
+    <div class="result-label-top">&#52572;&#51333; &#51216;&#49688;</div>
+    <div class="result-score" id="result-score">0</div>
+    <div class="result-unit">BLOCKS HIT</div>
+    <div class="result-divider"></div>
+    <div class="result-rank" id="result-rank"></div>
+  </div>
+  <div class="result-buttons">
+    <button class="px-btn" onclick="openRegisterModal()">&#127942; &#47581;&#53373; &#46321;&#47197;&#54616;&#44592;</button>
+    <button class="px-btn secondary" onclick="showRankingScreen()">&#47581;&#53373; &#48372;&#44592;</button>
+    <button class="px-btn secondary" onclick="goMain()">&#9668; &#47700;&#51064;&#51004;&#47196;</button>
+  </div>
+</div>
+
+<!-- RANKING SCREEN -->
+<div class="screen" id="ranking-screen">
+  <div class="result-header">&#127942; RANKING</div>
+  <div class="subtitle" style="margin-bottom:8px;">TOP 10 &#54540;&#47112;&#51060;&#50612;</div>
+  <div class="ranking-panel">
+    <div class="ranking-list" id="ranking-list">
+      <div class="rank-loading">&#48520;&#47084;&#50724;&#45716; &#51473;...</div>
+    </div>
+  </div>
+  <div class="result-buttons">
+    <button class="px-btn" onclick="startCountdown()">&#45796;&#49884; &#46020;&#51204;!</button>
+    <button class="px-btn secondary" onclick="goMain()">&#9668; &#47700;&#51064;&#51004;&#47196;</button>
+  </div>
+</div>
+
+<!-- NICKNAME MODAL -->
+<div class="modal-overlay" id="nickname-modal">
+  <div class="modal-box">
+    <div class="modal-title">&#127942; &#47581;&#53373; &#46321;&#47197;</div>
+    <div class="modal-score-preview">&#45236; &#51216;&#49688;: <span id="modal-score-display">0</span> pts</div>
+    <div class="modal-desc">&#45768;&#53356;&#45348;&#51076;&#51012; &#51077;&#47141;&#54616;&#49464;&#50836; (&#52572;&#45824; 12&#51088;)</div>
+    <input class="nickname-input" id="nickname-input" type="text" maxlength="12" placeholder="&#45768;&#53356;&#45348;&#51076; &#51077;&#47141;..." autocomplete="off" />
+    <div class="modal-error" id="modal-error"></div>
+    <div class="modal-buttons">
+      <button class="px-btn" id="register-btn" onclick="submitRanking()">&#46321;&#47197;&#54616;&#44592;</button>
+      <button class="px-btn secondary" onclick="closeRegisterModal()">&#52712;&#49548;</button>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+<script>
+  var _origOpen = openRegisterModal;
+  window.openRegisterModal = function() {
+    document.getElementById("modal-score-display").textContent = score;
+    _origOpen();
+  };
+</script>
+</body>
+</html>
