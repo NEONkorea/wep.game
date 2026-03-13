@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>PIXEL BLINK</title>
+<title>스코어 게임</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,23 +19,23 @@
 <!-- MAIN SCREEN -->
 <div class="screen active" id="main-screen">
   <div class="main-top">
-    <div class="title">PIXEL<br>BLINK</div>
-    <div class="subtitle">&#9658; TAP THE YELLOW BLOCK &#9668;</div>
+    <div class="title">스코어<br>게임</div>
+    <div class="subtitle">&#9658; 노란 블록을 탭하세요! &#9668;</div>
   </div>
 
   <div class="main-legend-wrap">
     <div class="legend-card">
       <div class="legend-dot-big yellow-block"></div>
       <div class="legend-text-wrap">
-        <span class="legend-title-text">&#53364;&#47533; &#45824;&#49345;</span>
-        <span class="legend-desc">&#44552; &#48660;&#47084;&#51012; &#48736;&#47476;&#44172; &#53468;!</span>
+        <span class="legend-title-text">클릭 대상</span>
+        <span class="legend-desc">금 블록을 빠르게 탭!</span>
       </div>
     </div>
     <div class="legend-card">
       <div class="legend-dot-big red-block"></div>
       <div class="legend-text-wrap">
-        <span class="legend-title-text">&#45796;&#51020; &#50948;&#52824;</span>
-        <span class="legend-desc">&#47808;&#46300;&#49828;&#53860; = &#45796;&#51020;&#50640; &#50620; &#48660;&#47084;</span>
+        <span class="legend-title-text">다음 위치</span>
+        <span class="legend-desc">레드스톤 = 다음에 올 블록</span>
       </div>
     </div>
   </div>
@@ -44,14 +44,14 @@
   <div class="main-ranking-panel">
     <div class="main-ranking-header">TOP 10 RANKING</div>
     <div class="ranking-list" id="main-ranking-list">
-      <div class="rank-loading">&#48520;&#47084;&#50724;&#45716; &#51473;...</div>
+      <div class="rank-loading">불러오는 중...</div>
     </div>
   </div>
 
   <div class="main-bottom">
-    <button class="px-btn" onclick="startCountdown()">&#44172;&#51076; &#49884;&#51089;</button>
-    <button class="px-btn secondary" onclick="showRankingScreen()">&#127942; &#47581;&#53373; &#48372;&#44592;</button>
-    <div class="hint-text">15&#52488; &#50504;&#50640; &#52572;&#45824;&#54620; &#47588;&#51060; &#53364;&#47533;!</div>
+    <button class="px-btn" onclick="startCountdown()">게임 시작</button>
+    <button class="px-btn secondary" onclick="showRankingScreen()">🏆 랭킹 보기</button>
+    <div class="hint-text">15초 안에 최대한 많이 클릭!</div>
   </div>
 </div>
 
@@ -77,11 +77,11 @@
   <div class="game-legend">
     <div class="legend-item">
       <div class="legend-dot yellow-block"></div>
-      <span>&#51648;&#44552; &#53364;&#47533;!</span>
+      <span>지금 클릭!</span>
     </div>
     <div class="legend-item">
       <div class="legend-dot red-block"></div>
-      <span>&#45796;&#51020; &#50948;&#52824;</span>
+      <span>다음 위치</span>
     </div>
   </div>
 </div>
@@ -90,45 +90,45 @@
 <div class="screen" id="result-screen">
   <div class="result-header">GAME OVER</div>
   <div class="result-card">
-    <div class="result-label-top">&#52572;&#51333; &#51216;&#49688;</div>
+    <div class="result-label-top">최종 점수</div>
     <div class="result-score" id="result-score">0</div>
     <div class="result-unit">BLOCKS HIT</div>
     <div class="result-divider"></div>
     <div class="result-rank" id="result-rank"></div>
   </div>
   <div class="result-buttons">
-    <button class="px-btn" onclick="openRegisterModal()">&#127942; &#47581;&#53373; &#46321;&#47197;&#54616;&#44592;</button>
-    <button class="px-btn secondary" onclick="showRankingScreen()">&#47581;&#53373; &#48372;&#44592;</button>
-    <button class="px-btn secondary" onclick="goMain()">&#9668; &#47700;&#51064;&#51004;&#47196;</button>
+    <button class="px-btn" onclick="openRegisterModal()">🏆 랭킹 등록하기</button>
+    <button class="px-btn secondary" onclick="showRankingScreen()">랭킹 보기</button>
+    <button class="px-btn secondary" onclick="goMain()">&#9668; 메인으로</button>
   </div>
 </div>
 
 <!-- RANKING SCREEN -->
 <div class="screen" id="ranking-screen">
-  <div class="result-header">&#127942; RANKING</div>
-  <div class="subtitle" style="margin-bottom:8px;">TOP 10 &#54540;&#47112;&#51060;&#50612;</div>
+  <div class="result-header">🏆 RANKING</div>
+  <div class="subtitle" style="margin-bottom:8px;">TOP 10 플레이어</div>
   <div class="ranking-panel">
     <div class="ranking-list" id="ranking-list">
-      <div class="rank-loading">&#48520;&#47084;&#50724;&#45716; &#51473;...</div>
+      <div class="rank-loading">불러오는 중...</div>
     </div>
   </div>
   <div class="result-buttons">
-    <button class="px-btn" onclick="startCountdown()">&#45796;&#49884; &#46020;&#51204;!</button>
-    <button class="px-btn secondary" onclick="goMain()">&#9668; &#47700;&#51064;&#51004;&#47196;</button>
+    <button class="px-btn" onclick="startCountdown()">다시 도전!</button>
+    <button class="px-btn secondary" onclick="goMain()">&#9668; 메인으로</button>
   </div>
 </div>
 
 <!-- NICKNAME MODAL -->
 <div class="modal-overlay" id="nickname-modal">
   <div class="modal-box">
-    <div class="modal-title">&#127942; &#47581;&#53373; &#46321;&#47197;</div>
-    <div class="modal-score-preview">&#45236; &#51216;&#49688;: <span id="modal-score-display">0</span> pts</div>
-    <div class="modal-desc">&#45768;&#53356;&#45348;&#51076;&#51012; &#51077;&#47141;&#54616;&#49464;&#50836; (&#52572;&#45824; 12&#51088;)</div>
-    <input class="nickname-input" id="nickname-input" type="text" maxlength="12" placeholder="&#45768;&#53356;&#45348;&#51076; &#51077;&#47141;..." autocomplete="off" />
+    <div class="modal-title">🏆 랭킹 등록</div>
+    <div class="modal-score-preview">내 점수: <span id="modal-score-display">0</span> pts</div>
+    <div class="modal-desc">닉네임을 입력하세요 (최대 12자)</div>
+    <input class="nickname-input" id="nickname-input" type="text" maxlength="12" placeholder="닉네임 입력..." autocomplete="off" />
     <div class="modal-error" id="modal-error"></div>
     <div class="modal-buttons">
-      <button class="px-btn" id="register-btn" onclick="submitRanking()">&#46321;&#47197;&#54616;&#44592;</button>
-      <button class="px-btn secondary" onclick="closeRegisterModal()">&#52712;&#49548;</button>
+      <button class="px-btn" id="register-btn" onclick="submitRanking()">등록하기</button>
+      <button class="px-btn secondary" onclick="closeRegisterModal()">취소</button>
     </div>
   </div>
 </div>
