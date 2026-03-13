@@ -31,6 +31,20 @@ const sb = {
     );
     if (!res.ok) throw new Error(await res.text());
     return res.json();
+  },
+
+  async resetAll() {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/rankings?id=gte.0`,
+      {
+        method: 'DELETE',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      }
+    );
+    if (!res.ok) throw new Error(await res.text());
   }
 };
 
@@ -135,11 +149,11 @@ function endGame() {
   document.querySelectorAll('.block').forEach(b => b.className = 'block');
   document.getElementById('result-score').textContent = score;
   const ranks = [
-    [0,  'BEGINNER...다시 해봐!'],
+    [0,  'BEGINNER... 다시 해봐!'],
     [5,  'NOT BAD! 조금만 더!'],
     [10, 'GOOD JOB! 빠른 손!'],
     [15, 'EXCELLENT!! 최강!'],
-    [20, 'PIXEL MASTER'],
+    [20, 'SCORE MASTER'],
   ];
   let rank = ranks[0][1];
   for (const [threshold, label] of ranks) {
